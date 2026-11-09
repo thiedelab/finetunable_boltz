@@ -473,6 +473,7 @@ class ConfidenceHeads(nn.Module):
             complex_iplddt=complex_iplddt,
             complex_pde=complex_pde,
             complex_ipde=complex_ipde,
+            contact_probs=prob_contact,
         )
         out_dict["pae_logits"] = pae_logits
         out_dict["pae"] = compute_aggregated_metric(pae_logits, end=32)

@@ -1083,6 +1083,13 @@ class Boltz2(LightningModule):
                 # pred_dict["confidence"] = out.get("ablation_confidence", None)
                 pred_dict["pde"] = out["pde"]
                 pred_dict["plddt"] = out["plddt"]
+                for key in (
+                    "pae_logits",
+                    "plddt_logits",
+                    "pde_logits",
+                    "contact_probs",
+                ):
+                    pred_dict[key] = out[key]
                 pred_dict["confidence_score"] = (
                     4 * out["complex_plddt"]
                     + (

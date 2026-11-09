@@ -158,6 +158,29 @@ class BoltzWriter(BasePredictionWriter):
                 # Create path name
                 outname = f"{record.id}_model_{idx_to_rank[model_idx]}"
 
+                tensor_dir = struct_dir / "confidence_tensors"
+                tensor_dir.mkdir(parents=True, exist_ok=True)
+
+                tensor_keys = (
+                    "pae_logits",
+                    "plddt_logits",
+                    "pde_logits",
+                    "contact_probs",
+                )
+
+                for key in tensor_keys:
+                    if key not in prediction:
+                        raise KeyError(f"Missing tensor: {key}")
+
+                    tensor = prediction[key][model_idx]
+
+                    tensor_path = tensor_dir / f"{outname}_{key}.pt"
+
+                    torch.save(
+                        tensor.detach().cpu().contiguous(),
+                        tensor_path,
+                    )
+
                 # Save the structure
                 if self.output_format == "pdb":
                     path = struct_dir / f"{outname}.pdb"
